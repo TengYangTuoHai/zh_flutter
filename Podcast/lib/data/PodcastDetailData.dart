@@ -1,33 +1,40 @@
+import 'package:Podcast/data/PodcastItemData.dart';
 import 'package:xml/xml.dart';
 
-class PodcastDetailData {
+class PodcastChannelData {
   String title;
   String link;
   String description;
   String imgUrl;
+  List<PodcastItemData> items;
 
-  PodcastDetailData({this.title, this.link, this.description});
+  PodcastChannelData({this.title, this.link, this.description, this.items});
 
-  factory PodcastDetailData.fromXml(String xmlDoc) {
+  factory PodcastChannelData.fromXml(String xmlDoc) {
     final document = XmlDocument.parse(xmlDoc);
-    PodcastDetailData detailData = new PodcastDetailData();
+    PodcastChannelData detailData = new PodcastChannelData();
     var channels = document.findAllElements("channel");
-    for (var node in channels) {
-      detailData.title = node.findElements("title").single.text;
-      detailData.link = node.findElements("link").single.text;
-      detailData.description = node.findElements("description").single.text;
-      detailData.imgUrl =
-          node.findElements("itunes:image").single.getAttribute("href");
+    var node = channels.single;
+    detailData.title = node.findElements("title").single.text;
+    detailData.link = node.findElements("link").single.text;
+    detailData.description = node.findElements("description").single.text;
+    detailData.imgUrl =
+        node.findElements("itunes:image").single.getAttribute("href");
+    var items = node.findAllElements("item");
+    detailData.items = new List();
+    for (XmlNode item in items) {
+      detailData.items.add(PodcastItemData.fromNode(item));
     }
 
     return detailData;
   }
 
-  factory PodcastDetailData.empty() {
-    return PodcastDetailData(
+  factory PodcastChannelData.empty() {
+    return PodcastChannelData(
       title: "",
       link: "",
       description: "",
+      items: new List(),
     );
   }
 }

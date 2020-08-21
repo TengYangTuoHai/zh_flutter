@@ -4,7 +4,7 @@ import 'package:Podcast/api/Api_iTunes.dart';
 import 'package:Podcast/data/PodcastDetailData.dart';
 import 'package:Podcast/data/SearchItemData.dart';
 import 'package:Podcast/data/SearchResultData.dart';
-import 'package:Podcast/page/PodcastWidget.dart';
+import 'package:Podcast/page/PodcastChannelWidget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -30,12 +30,12 @@ class HomeState extends State<HomeWidget> {
     }
   }
 
-  Future<PodcastDetailData> _fetchDeatailData(SearchItemData itemData) async {
+  Future<PodcastChannelData> _fetchDeatailData(SearchItemData itemData) async {
     final response = await http.get(itemData.feedUrl);
     if (response.statusCode == 200)
-      return PodcastDetailData.fromXml(response.body);
+      return PodcastChannelData.fromXml(response.body);
     else
-      return PodcastDetailData.empty();
+      return PodcastChannelData.empty();
   }
 
   _searchWidget() {
@@ -75,12 +75,12 @@ class HomeState extends State<HomeWidget> {
     setState(() {
       linearOffstage = false;
     });
-    PodcastDetailData podcastData = await _fetchDeatailData(_itemData);
+    PodcastChannelData podcastData = await _fetchDeatailData(_itemData);
     setState(() {
       linearOffstage = true;
     });
     Navigator.push(context, MaterialPageRoute(builder: (context) {
-      return PodcastWidget(
+      return PodcastChannelWidget(
         data: podcastData,
         searchItemData: _itemData,
       );
@@ -88,10 +88,10 @@ class HomeState extends State<HomeWidget> {
   }
 
   LinearProgressIndicator linear = new LinearProgressIndicator(
-    backgroundColor: Colors.purple,
+    backgroundColor: Colors.blue,
   );
   CircularProgressIndicator circul = new CircularProgressIndicator(
-    backgroundColor: Colors.purple,
+    backgroundColor: Colors.blue,
   );
 
   _resultList() {
