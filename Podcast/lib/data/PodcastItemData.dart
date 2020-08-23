@@ -1,3 +1,4 @@
+import 'package:Podcast/tools/XmlTool.dart';
 import 'package:xml/xml.dart';
 
 class PodcastItemData {
@@ -23,10 +24,10 @@ class PodcastItemData {
 
   factory PodcastItemData.fromNode(XmlNode node) {
     return PodcastItemData(
-      title: node.findElements("title").single.text,
-      link: node.findElements("link").single.text,
-      pubDate: node.findElements("pubDate").single.text,
-      author: node.findElements("author").single.text,
+      title: XmlTools.getNodeElementValue(node, "title"),
+      link: XmlTools.getNodeElementValue(node, "link"),
+      pubDate: XmlTools.getNodeElementValue(node, "pubDate"),
+      author: XmlTools.getNodeElementValue(node, "author"),
       enclosure: node.findElements("enclosure").single.getAttribute("url"),
       itunesDuration: node.findElements("itunes:duration").single.text,
       itunesImage:

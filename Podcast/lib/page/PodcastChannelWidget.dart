@@ -1,5 +1,7 @@
 import 'package:Podcast/data/PodcastDetailData.dart';
+import 'package:Podcast/data/PodcastItemData.dart';
 import 'package:Podcast/data/SearchItemData.dart';
+import 'package:Podcast/page/PlayerWidget.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 
@@ -30,24 +32,22 @@ class PodcastChannelState extends State<PodcastChannelWidget> {
         return ListTile(
           title: Text(data.items[index].title),
           subtitle: Text(data.items[index].author),
-          onTap: () => {_playPodcast(data.items[index].enclosure)},
+          onTap: () => {
+            Navigator.push(context, MaterialPageRoute(builder: (context) {
+              return PlayerWidget(
+                podcastData: data.items[index],
+              );
+            }))
+          },
         );
       },
     );
   }
 
-  _playPodcast(String url) async {
-    AudioPlayer.logEnabled = true;
-    player = new AudioPlayer();
-    int result = await player.play(url);
-    if (result == 1) {
-      print("podcast playing");
-    } else
-      print("play error");
-  }
-
   @override
   Widget build(BuildContext context) {
+    AudioPlayer.logEnabled = true;
+
     return Scaffold(
       appBar: AppBar(
         title: Text(data?.title),

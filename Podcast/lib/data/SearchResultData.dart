@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:Podcast/data/SearchItemData.dart';
 
 class SearchResultData {
